@@ -126,7 +126,7 @@ export default function DashboardPage() {
             <BarChart data={tripBudgetData}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
               <XAxis dataKey="name" tickLine={false} axisLine={false} />
-              <YAxis tickFormatter={(value) => `$${value / 1000}k`} tickLine={false} axisLine={false} />
+              <YAxis tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}k`} tickLine={false} axisLine={false} />
               <Tooltip formatter={(value) => currency(value)} />
               <Bar dataKey="budget" radius={[6, 6, 0, 0]}>
                 {tripBudgetData.map((entry, index) => (

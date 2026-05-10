@@ -1,4 +1,4 @@
-import { BarChart3, CalendarPlus, Home, Map, Plane, Route, WalletCards } from "lucide-react";
+import { BarChart3, CalendarPlus, Home, Map, Plane, WalletCards } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const navItems = [
@@ -44,13 +44,6 @@ export default function Sidebar({ onNavigate }) {
         })}
       </div>
 
-      <div className="mt-auto rounded-lg border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/5">
-        <Route className="h-5 w-5 text-brand-teal" />
-        <p className="mt-3 text-sm font-semibold text-slate-950 dark:text-white">Demo flow</p>
-        <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">
-          Create a trip, add activities, review budget charts, then publish a share link.
-        </p>
-      </div>
     </aside>
   );
 }

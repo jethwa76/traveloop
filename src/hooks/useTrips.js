@@ -4,7 +4,6 @@ import { useToast } from "../context/ToastContext.jsx";
 import {
   createTrip,
   deleteTrip,
-  listTrips,
   shareTrip,
   subscribeToTrips,
   updateTrip,
@@ -14,12 +13,8 @@ export function useTrips() {
   const { user } = useAuth();
   const { showToast } = useToast();
   const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const refreshLocalTrips = useCallback(async () => {
-    if (!user?.uid) return;
-    setTrips(await listTrips(user.uid));
-  }, [user?.uid]);
+  // Start false — only go true when we actually have a uid and are fetching
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user?.uid) {
@@ -29,10 +24,17 @@ export function useTrips() {
     }
 
     setLoading(true);
-    const unsubscribe = subscribeToTrips(user.uid, (items) => {
-      setTrips(items);
-      setLoading(false);
-    });
+    const unsubscribe = subscribeToTrips(
+      user.uid,
+      (items) => {
+        setTrips(items);
+        setLoading(false);
+      },
+      () => {
+        // On Firestore error, stop loading so the UI never freezes
+        setLoading(false);
+      },
+    );
 
     return unsubscribe;
   }, [user?.uid]);
@@ -40,40 +42,42 @@ export function useTrips() {
   const addTrip = useCallback(
     async (payload) => {
       const trip = await createTrip(user.uid, payload);
-      await refreshLocalTrips();
+      // onSnapshot updates trips automatically for Firebase mode.
+      // For demo mode, sync state directly since there is no live listener.
+      setTrips((current) => [trip, ...current.filter((t) => t.id !== trip.id)]);
       showToast({ type: "success", title: "Trip created", message: `${trip.name} is ready to plan.` });
       return trip;
     },
-    [refreshLocalTrips, showToast, user?.uid],
+    [showToast, user?.uid],
   );
 
   const saveTrip = useCallback(
     async (tripId, payload) => {
       const trip = await updateTrip(user.uid, tripId, payload);
-      await refreshLocalTrips();
+      setTrips((current) => current.map((t) => (t.id === tripId ? { ...t, ...payload } : t)));
       showToast({ type: "success", title: "Trip updated", message: "Your changes were saved." });
       return trip;
     },
-    [refreshLocalTrips, showToast, user?.uid],
+    [showToast, user?.uid],
   );
 
   const removeTrip = useCallback(
     async (tripId) => {
       await deleteTrip(user.uid, tripId);
-      await refreshLocalTrips();
+      setTrips((current) => current.filter((t) => t.id !== tripId));
       showToast({ type: "success", title: "Trip deleted", message: "The trip was removed from your planner." });
     },
-    [refreshLocalTrips, showToast, user?.uid],
+    [showToast, user?.uid],
   );
 
   const publishTrip = useCallback(
     async (tripId) => {
       const trip = await shareTrip(user.uid, tripId);
-      await refreshLocalTrips();
+      setTrips((current) => current.map((t) => (t.id === tripId ? { ...t, isShared: true } : t)));
       showToast({ type: "success", title: "Share link ready", message: "Your public itinerary has been updated." });
       return trip;
     },
-    [refreshLocalTrips, showToast, user?.uid],
+    [showToast, user?.uid],
   );
 
   return {
@@ -83,6 +87,5 @@ export function useTrips() {
     saveTrip,
     removeTrip,
     publishTrip,
-    refreshTrips: refreshLocalTrips,
   };
 }

@@ -12,7 +12,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db, isFirebaseConfigured } from "../firebase/firebase.js";
-import { sampleTrips } from "../data/mockTrips.js";
 
 const TRIP_KEY_PREFIX = "traveloop-trips";
 const SHARE_KEY = "traveloop-shared-trips";
@@ -21,19 +20,13 @@ function localTripKey(userId) {
   return `${TRIP_KEY_PREFIX}:${userId || "demo-user"}`;
 }
 
-function clone(value) {
-  return JSON.parse(JSON.stringify(value));
-}
-
 function ensureLocalTrips(userId) {
   const key = localTripKey(userId);
   const saved = localStorage.getItem(key);
   if (saved) return JSON.parse(saved);
 
-  const seeded = clone(sampleTrips);
-  localStorage.setItem(key, JSON.stringify(seeded));
-  localStorage.setItem(SHARE_KEY, JSON.stringify({ [seeded[0].id]: seeded[0] }));
-  return seeded;
+  localStorage.setItem(key, JSON.stringify([]));
+  return [];
 }
 
 function saveLocalTrips(userId, trips) {
@@ -44,16 +37,24 @@ function normalizeTrip(docSnapshot) {
   return { id: docSnapshot.id, ...docSnapshot.data() };
 }
 
-export function subscribeToTrips(userId, callback) {
+export function subscribeToTrips(userId, callback, onError) {
   if (!isFirebaseConfigured) {
-    const timeout = window.setTimeout(() => callback(ensureLocalTrips(userId)), 120);
-    return () => window.clearTimeout(timeout);
+    // Call synchronously — localStorage is instant, no timeout needed
+    callback(ensureLocalTrips(userId));
+    return () => {};
   }
 
   const tripsQuery = query(collection(db, "users", userId, "trips"), orderBy("createdAt", "desc"));
-  return onSnapshot(tripsQuery, (snapshot) => {
-    callback(snapshot.docs.map(normalizeTrip));
-  });
+  return onSnapshot(
+    tripsQuery,
+    (snapshot) => {
+      callback(snapshot.docs.map(normalizeTrip));
+    },
+    (error) => {
+      console.error("Firestore trips subscription error:", error);
+      if (onError) onError(error);
+    },
+  );
 }
 
 export async function listTrips(userId) {

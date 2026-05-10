@@ -37,6 +37,8 @@ export default function TripDetailsPage() {
   useEffect(() => {
     if (!user?.uid) return;
     let active = true;
+    setLoading(true);
+    setTrip(null);
 
     getTrip(user.uid, tripId)
       .then((loadedTrip) => {

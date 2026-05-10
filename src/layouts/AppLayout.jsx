@@ -8,7 +8,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useToast } from "../context/ToastContext.jsx";
 
 export default function AppLayout() {
-  const { user, logout, isDemoMode } = useAuth();
+  const { user, logout } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -67,11 +67,6 @@ export default function AppLayout() {
             </div>
 
             <div className="flex items-center gap-2">
-              {isDemoMode ? (
-                <span className="hidden rounded-lg bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-700 dark:bg-amber-500/10 dark:text-amber-200 sm:inline-flex">
-                  Demo mode
-                </span>
-              ) : null}
               <ThemeToggle />
               <Link to="/trips/new" className="primary-button hidden sm:inline-flex">
                 <Plus className="h-4 w-4" />

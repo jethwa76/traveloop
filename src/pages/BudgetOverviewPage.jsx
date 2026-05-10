@@ -125,7 +125,7 @@ export default function BudgetOverviewPage() {
             <BarChart data={costBreakdown}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
               <XAxis dataKey="name" tickLine={false} axisLine={false} />
-              <YAxis tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} />
+              <YAxis tickFormatter={(value) => `₹${value}`} tickLine={false} axisLine={false} />
               <Tooltip formatter={(value) => currency(value)} />
               <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
                 {costBreakdown.map((entry) => (
@@ -149,7 +149,7 @@ export default function BudgetOverviewPage() {
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
               <XAxis dataKey="day" tickLine={false} axisLine={false} />
-              <YAxis tickFormatter={(value) => `$${value}`} tickLine={false} axisLine={false} />
+              <YAxis tickFormatter={(value) => `₹${value}`} tickLine={false} axisLine={false} />
               <Tooltip formatter={(value) => currency(value)} />
               <Area type="monotone" dataKey="cost" stroke="#2f80ed" fill="url(#dailyCost)" strokeWidth={3} />
             </AreaChart>

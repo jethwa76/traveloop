@@ -20,7 +20,7 @@ export default function Navbar() {
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-950 text-white dark:bg-white dark:text-slate-950">
             <Plane className="h-5 w-5" />
           </span>
-          <span className="font-semibold">Traveloop Lite</span>
+          <span className="font-semibold">TravelLoop</span>
         </Link>
 
         <div className="hidden items-center gap-8 md:flex">

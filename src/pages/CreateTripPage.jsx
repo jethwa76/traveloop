@@ -115,6 +115,30 @@ export default function CreateTripPage() {
     if (!validate()) return;
     setSubmitting(true);
 
+    // Reconcile itinerary against the new date range.
+    // Always recalculate so duration changes are reflected correctly.
+    const newDuration = Math.min(getTripDuration(form.startDate, form.endDate) || 1, 30);
+    const existingItinerary = existingTrip?.itinerary ?? [];
+
+    const reconciledItinerary = Array.from({ length: newDuration }, (_, index) => {
+      const day = index + 1;
+      const existing = existingItinerary.find((d) => Number(d.day) === day);
+      if (existing) {
+        // Keep the existing day with its activities, just update the date
+        return { ...existing, date: getDateForDay(form.startDate, day) };
+      }
+      // New day beyond the old duration — create an empty day
+      const city = destinationList[Math.min(index, destinationList.length - 1)] || destinationList[0] || "";
+      return {
+        id: crypto.randomUUID(),
+        day,
+        date: getDateForDay(form.startDate, day),
+        city,
+        title: city ? `${city} day ${day}` : `Day ${day}`,
+        activities: [],
+      };
+    });
+
     const payload = {
       name: form.name.trim(),
       startDate: form.startDate,
@@ -124,7 +148,7 @@ export default function CreateTripPage() {
       description: form.description.trim(),
       budget,
       notes: existingTrip?.notes ?? [],
-      itinerary: existingTrip?.itinerary ?? buildItinerary(form.startDate, form.endDate, destinationList),
+      itinerary: reconciledItinerary,
     };
 
     try {
@@ -172,7 +196,7 @@ export default function CreateTripPage() {
             <input
               id="name"
               className="input-field mt-2"
-              placeholder="Japan Spring Loop"
+              placeholder="Golden Triangle Escape"
               value={form.name}
               onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))}
             />
@@ -210,7 +234,7 @@ export default function CreateTripPage() {
               <input
                 id="destinations"
                 className="input-field pl-10"
-                placeholder="Tokyo, Kyoto, Osaka"
+                placeholder="Delhi, Agra, Jaipur"
                 value={form.destinations}
                 onChange={(event) => setForm((current) => ({ ...current, destinations: event.target.value }))}
               />
@@ -225,7 +249,7 @@ export default function CreateTripPage() {
               type="number"
               min="0"
               className="input-field mt-2"
-              placeholder="3200"
+              placeholder="25000"
               value={form.estimatedBudget}
               onChange={(event) => handleEstimateChange(event.target.value)}
             />
@@ -237,7 +261,7 @@ export default function CreateTripPage() {
             <textarea
               id="description"
               className="input-field mt-2 min-h-28 resize-y"
-              placeholder="What kind of trip is this?"
+              placeholder="A cultural and food journey across North India"
               value={form.description}
               onChange={(event) => setForm((current) => ({ ...current, description: event.target.value }))}
             />

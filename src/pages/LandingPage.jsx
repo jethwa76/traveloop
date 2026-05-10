@@ -1,12 +1,8 @@
 import { motion } from "framer-motion";
 import {
-  BarChart3,
   CalendarCheck,
-  CheckCircle2,
-  Globe2,
   MapPinned,
   Share2,
-  Sparkles,
   WalletCards,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -52,19 +48,15 @@ export default function LandingPage() {
           <div className="absolute inset-0 bg-slate-950/55" />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-950/40 via-transparent to-slate-950/75" />
 
-          <div className="relative mx-auto grid max-w-7xl gap-10 px-4 pb-16 pt-24 sm:px-6 lg:grid-cols-[1fr_0.88fr] lg:px-8 lg:pb-20 lg:pt-32">
+          <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-24 sm:px-6 lg:px-8 lg:pb-20 lg:pt-32">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55 }}
               className="max-w-2xl"
             >
-              <span className="inline-flex items-center gap-2 rounded-lg border border-white/20 bg-white/15 px-3 py-2 text-sm font-medium text-white backdrop-blur">
-                <Sparkles className="h-4 w-4 text-brand-mint" />
-                Hackathon-ready travel planning
-              </span>
               <h1 className="mt-6 text-5xl font-semibold text-white sm:text-6xl">
-                Traveloop Lite
+                TravelLoop
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-slate-100">
                 A modern travel planner for trips, day-wise itineraries, budgets, and shareable public plans.
@@ -76,57 +68,6 @@ export default function LandingPage() {
                 <Link to="/login" className="secondary-button border-white/30 bg-white/15 text-white hover:bg-white/20">
                   Open demo
                 </Link>
-              </div>
-              <div className="mt-8 flex flex-wrap gap-4 text-sm text-slate-100">
-                {["Firebase auth", "Firestore CRUD", "Responsive UI"].map((item) => (
-                  <span key={item} className="inline-flex items-center gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-brand-mint" />
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 28, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: 0.15, duration: 0.55 }}
-              className="glass-panel self-end rounded-lg p-4 text-slate-950 dark:text-white"
-            >
-              <div className="rounded-lg bg-white p-4 dark:bg-slate-950">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Current plan</p>
-                    <h2 className="mt-1 text-xl font-semibold">Japan Spring Loop</h2>
-                  </div>
-                  <span className="rounded-lg bg-emerald-50 px-3 py-1 text-sm font-semibold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-200">
-                    Shared
-                  </span>
-                </div>
-
-                <div className="mt-5 grid grid-cols-2 gap-3">
-                  <div className="rounded-lg bg-slate-50 p-4 dark:bg-white/5">
-                    <Globe2 className="h-5 w-5 text-brand-sky" />
-                    <p className="mt-3 text-2xl font-semibold">3</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Cities</p>
-                  </div>
-                  <div className="rounded-lg bg-slate-50 p-4 dark:bg-white/5">
-                    <BarChart3 className="h-5 w-5 text-brand-coral" />
-                    <p className="mt-3 text-2xl font-semibold">$3.2k</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Budget</p>
-                  </div>
-                </div>
-
-                <div className="mt-5 space-y-3">
-                  {["Tokyo arrival and ramen crawl", "Kyoto temple morning", "Osaka food market"].map((item, index) => (
-                    <div key={item} className="flex items-center gap-3 rounded-lg border border-slate-200 p-3 dark:border-white/10">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-sm font-semibold text-brand-sky dark:bg-blue-500/10">
-                        {index + 1}
-                      </span>
-                      <p className="text-sm font-medium">{item}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             </motion.div>
           </div>
@@ -169,16 +110,9 @@ export default function LandingPage() {
               <p className="text-sm font-semibold uppercase text-brand-coral">Visual planning</p>
               <h2 className="mt-3 text-3xl font-semibold text-slate-950 dark:text-white">A clean workspace for real trip decisions</h2>
               <p className="mt-4 leading-7 text-slate-500 dark:text-slate-400">
-                Traveloop Lite uses calm dashboard patterns, readable cards, and quick actions so users can make progress without hunting through menus.
+                TravelLoop uses calm dashboard patterns, readable cards, and quick actions so users can make progress without hunting through menus.
               </p>
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {["Protected routes", "Trip CRUD", "Budget charts", "Printable share page"].map((item) => (
-                  <div key={item} className="flex items-center gap-3 rounded-lg bg-white p-3 text-sm font-medium text-slate-700 shadow-sm dark:bg-slate-950 dark:text-slate-200">
-                    <CheckCircle2 className="h-4 w-4 text-brand-teal" />
-                    {item}
-                  </div>
-                ))}
-              </div>
+
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <img
