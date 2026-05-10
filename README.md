@@ -2,6 +2,10 @@
 
 Traveloop Lite is a modern travel planning MVP built with React, Vite, Tailwind CSS, Firebase Authentication, and Firestore. It is designed to look polished in a hackathon demo while staying realistic to build and ship in one day.
 
+deploy site
+https://traveloop-one.vercel.app/
+
+
 ## Features
 
 - Landing page with startup-style positioning, visuals, CTAs, features, testimonials, and footer
