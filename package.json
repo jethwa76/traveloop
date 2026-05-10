@@ -1,0 +1,27 @@
+{
+  "name": "traveloop-lite",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "vite": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest",
+    "framer-motion": "latest",
+    "recharts": "latest",
+    "lucide-react": "latest",
+    "firebase": "latest",
+    "clsx": "latest"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.17",
+    "postcss": "latest",
+    "autoprefixer": "latest"
+  }
+}
